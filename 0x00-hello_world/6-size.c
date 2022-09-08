@@ -1,21 +1,27 @@
 #include <stdio.h>
 /**
-* main -Entry point
-*
-* Return: Always 0 (Success)
-*/
+ * main - entry point
+ * Prints size of data types
+ * for the particular compiler...
+ *
+ * Return: status(0)
+ */
 int main(void)
 {
-	int a;
-	long int b;
-	long long int c;
-	char d;
-	float f;
+	int intType;
 
-	printf("Size of a char: %lu byte(s)\n", (unsigned long)sizeof(d));
-	printf("Size of an int: %lu bytes(s)\n", (unsigned long)sizeof(a));
-	printf("Size of a long int: %lu byte(s)\n", (unsigned long)sizeof(b));
-	printf("Size of a long long int: %lu byte(s)\n", (unsigned long)sizeof(c));
-	printf("Size of a float: %lu byte(s)\n", (unsigned long)sizeof(f));
+	char charType;
+
+	long int longIntType;
+
+	long long int longLongIntType;
+
+	float floatType;
+
+	printf("Size of a char: %zu byte(s)\n", sizeof(charType));
+	printf("Size of an int: %zu byte(s)\n", sizeof(intType));
+	printf("Size of a long int: %zu byte(s)\n", sizeof(longIntType));
+	printf("Size of a long long int: %zu byte(s)\n", sizeof(longLongIntType));
+	printf("Size of a float: %zu byte(s)\n", sizeof(floatType));
 	return (0);
 }
