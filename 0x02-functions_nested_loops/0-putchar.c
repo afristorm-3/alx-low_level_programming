@@ -1,9 +1,9 @@
 #include "main.h"
 /**
  * main - main program file
- * 
+ *
  * show how to use header file
- * Return 0 to indicate success
+ * Return: 0 to indicate success
  *
  */
 
