@@ -1,77 +1,67 @@
+include "holberton.h"
 #include <stdlib.h>
-#include "main.h"
-#include <stdio.h>
 
 /**
-* strtow - function that converts a 2d array do a 1d
-* @str: String
-* Return: the new array
-*/
+ * ch_free_grid - frees a 2 dimensional array.
+ * @grid: multidimensional array of char.
+ * @height: height of the array.
+ *
+ * Return: no return
+ */
+void ch_free_grid(char **grid, unsigned int height)
+{
+	if (grid != NULL && height != 0)
+	{
+		for (; height > 0; height--)
+			free(grid[height]);
+		free(grid[height]);
+		free(grid);
+	}
+}
 
+/**
+ * strtow - splits a string into words.
+ * @str: string.
+ *
+ * Return: pointer of an array of integers
+ */
 char **strtow(char *str)
 {
-	char **pointer;
-	int cnt = 0;
-	int sLength = 0;
-	int i = 0;
-	int a = 0;
-	int b = 0;
+	char **aout;
+	unsigned int c, height, i, j, a1;
 
-	if (str == 0)
+	if (str == NULL || *str == '\0')
 		return (NULL);
-	for (i = 0; str[i]; i++)
+	for (c = height = 0; str[c] != '\0'; c++)
+		if (str[c] != ' ' && (str[c + 1] == ' ' || str[c + 1] == '\0'))
+			height++;
+	aout = malloc((height + 1) * sizeof(char *));
+	if (aout == NULL || height == 0)
 	{
-		if (str[i] != ' ' && str[i + 1] == ' ')
-			cnt++;
-		if (str[i] != ' ' && str[i + 1] == '\0')
-			cnt++;
-	}
-	if (cnt == 0)
-		return (NULL);
-	pointer = malloc(sizeof(char *) * (cnt + 1));
-	if (pointer == NULL)
-	{
-		free(pointer);
+		free(aout);
 		return (NULL);
 	}
-	for (i = 0, a = 0; str[i]; i++)
+	for (i = a1 = 0; i < height; i++)
 	{
-		if (str[i] == ' ')
-			sLength = 0;
-		if (str[i] != ' ')
-			sLength++;
-		if (str[i] != ' ' && (str[i + 1] == ' ' || str[i + 1] == '\0'))
+		for (c = a1; str[c] != '\0'; c++)
 		{
-			pointer[a] = malloc(sizeof(char) * sLength + 1);
-			if (pointer[a] == NULL)
+			if (str[c] == ' ')
+				a1++;
+			if (str[c] != ' ' && (str[c + 1] == ' ' || str[c + 1] == '\0'))
 			{
-				for ( ; a >= 0; a--)
-					free(pointer[a]);
-				free(pointer);
-				return (NULL);
+				aout[i] = malloc((c - a1 + 2) * sizeof(char));
+				if (aout[i] == NULL)
+				{
+					ch_free_grid(aout, i);
+					return (NULL);
+				}
+				break;
 			}
-			a++;
 		}
-
+		for (j = 0; a1 <= c; a1++, j++)
+			aout[i][j] = str[a1];
+		aout[i][j] = '\0';
 	}
-	for (i = 0, a = 0, b = 0; str[i]; i++)
-	{
-		if (str[i] != ' ' && str[i] != '\0' &&
-		a < cnt &&
-		(str[i + 1] == ' ' || str[i + 1] == '\0'))
-		{
-			pointer[a][b] = str[i];
-			b++;
-			pointer[a][b] = '\0';
-			a++;
-			b = 0;
-		}
-		else if (str[i] != ' ' && str[i] != '\0')
-		{
-			pointer[a][b] = str[i];
-			b++;
-		}
-	}
-	pointer[cnt] = NULL;
-	return (pointer);
+	aout[i] = NULL;
+	return (aout);
 }
