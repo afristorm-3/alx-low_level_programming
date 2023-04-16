@@ -1,5 +1,4 @@
 #include "search_algos.h"
-
 /**
  * recursive_search - searches for a value in an array of
  * integers using the Binary search algorithm
@@ -36,7 +35,9 @@ int recursive_search(int *array, size_t size, int value)
     if (value < array[half])
         return (recursive_search(array, half, value));
 
-    return (recursive_search(array + half + 1, size - half - 1, value) + half + 1);
+    half++;
+
+    return (recursive_search(array + half, size - half, value) + half);
 }
 
 /**
@@ -50,28 +51,14 @@ int recursive_search(int *array, size_t size, int value)
  */
 int binary_search(int *array, size_t size, int value)
 {
-    int low = 0, high = size - 1;
-    int mid, i;
+	int index = recursive_search(array, size, value);
+	
+	if (index >= 0 && array[index] != value)
+		return(-1);
+	if (index >= 0)
+		return (index);
 
-    while (low <= high)
-    {
-        printf("Searching in array:");
-        for (i = low; i <= high; i++)
-            printf("%s %d", (i == low) ? " " : ",", array[i]);
-        printf("\n");
-
-        mid = (low + high) / 2;
-
-        if (array[mid] == value)
-            return mid;
-
-        if (array[mid] < value)
-            low = mid + 1;
-        else
-            high = mid - 1;
-    }
-
-    return -1;
+	return (-1);
 }
 
 /**
@@ -98,20 +85,20 @@ int exponential_search(int *array, size_t size, int value)
 
     while (index < size && array[index] < value)
     {
-        printf("Value checked array[%lu] = [%d]\n", index, array[index]);
+        printf("Value checked array[%d] = [%d]\n", (int)index, array[index]);
         index *= 2;
     }
 
-    if (index >= size)
-        index = size - 1;
+    next = (index >= size) ? (size - 1) : index;
 
-    next = index + 1;
-    printf("Value found between indexes [%lu] and [%lu]\n", index / 2, index);
+    index /= 2;
 
-    result = binary_search(array + index / 2, next - index / 2, value);
+    printf("Value found between indexes [%d] and [%d]\n", (int)index, (int)next);
 
-    if (result == -1)
-        return (-1);
+    result = binary_search(array + index, (next + 1) - index, value);
 
-    return (result + index / 2);
+    if (result >= 0)
+        result += index;
+
+    return (result);
 }
