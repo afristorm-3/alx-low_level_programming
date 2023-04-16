@@ -1,4 +1,5 @@
 #include "search_algos.h"
+
 /**
  * recursive_search - searches for a value in an array of
  * integers using the Binary search algorithm
@@ -35,9 +36,7 @@ int recursive_search(int *array, size_t size, int value)
     if (value < array[half])
         return (recursive_search(array, half, value));
 
-    half++;
-
-    return (recursive_search(array + half, size - half, value) + half);
+    return (recursive_search(array + half + 1, size - half - 1, value) + half + 1);
 }
 
 /**
@@ -51,14 +50,28 @@ int recursive_search(int *array, size_t size, int value)
  */
 int binary_search(int *array, size_t size, int value)
 {
-	int index = recursive_search(array, size, value);
-	
-	if (index >= 0 && array[index] != value)
-		return(-1);
-	if (index >= 0)
-		return (index);
+    int low = 0, high = size - 1;
+    int mid, i;
 
-	return (-1);
+    while (low <= high)
+    {
+        printf("Searching in array:");
+        for (i = low; i <= high; i++)
+            printf("%s %d", (i == low) ? " " : ",", array[i]);
+        printf("\n");
+
+        mid = (low + high) / 2;
+
+        if (array[mid] == value)
+            return mid;
+
+        if (array[mid] < value)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+
+    return -1;
 }
 
 /**
@@ -85,20 +98,20 @@ int exponential_search(int *array, size_t size, int value)
 
     while (index < size && array[index] < value)
     {
-        printf("Value checked array[%d] = [%d]\n", (int)index, array[index]);
+        printf("Value checked array[%lu] = [%d]\n", index, array[index]);
         index *= 2;
     }
 
-    next = (index >= size) ? (size - 1) : index;
+    if (index >= size)
+        index = size - 1;
 
-    index /= 2;
+    next = index + 1;
+    printf("Value found between indexes [%lu] and [%lu]\n", index / 2, index);
 
-    printf("Value found between indexes [%d] and [%d]\n", (int)index, (int)next);
+    result = binary_search(array + index / 2, next - index / 2, value);
 
-    result = binary_search(array + index, (next + 1) - index, value);
+    if (result == -1)
+        return (-1);
 
-    if (result >= 0)
-        result += index;
-
-    return (result);
+    return (result + index / 2);
 }
