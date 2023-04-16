@@ -33,7 +33,7 @@ int recursive_search(int *array, size_t size, int value)
 	return ((int)half);
 
 	if (value < array[half])
-        return (recursive_search(array, half, value));
+	return (recursive_search(array, half, value));
 
 	half++;
 
@@ -52,11 +52,11 @@ int recursive_search(int *array, size_t size, int value)
 int binary_search(int *array, size_t size, int value)
 {
 	int index = recursive_search(array, size, value);
-	
+
 	if (index >= 0 && array[index] != value)
-		return(-1);
+	return (-1);
 	if (index >= 0)
-		return (index);
+	return (index);
 
 	return (-1);
 }
@@ -79,7 +79,7 @@ int exponential_search(int *array, size_t size, int value)
 	return (-1);
 
 	if (array[0] == value)
-        return (0);
+	return (0);
 
 	index = 1;
 
